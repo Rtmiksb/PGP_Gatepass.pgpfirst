@@ -116,7 +116,31 @@
     <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.14.6/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.15.0/firebase-storage.js"></script>
-   
+    <script>
+    function uploadImage() {
+    const ref = firebase.storage().ref();
+    const file = document.querySelector("#photo").files[0];
+    const name = +new Date() + "-" + file.name;
+    const metadata = {
+        contentType: file.type
+    };
+    const task = ref.child(name).put(file, metadata); 
+    task
+        .then(snapshot => snapshot.ref.getDownloadURL())
+        .then((url) => {
+            console.log(url);
+            // Create an image element to display the uploaded image
+            const imgElement = document.createElement("img");
+            imgElement.src = url;
+            // Append the image element to a container in your HTML (e.g., #imageContainer)
+            document.getElementById("imageContainer").appendChild(imgElement);
+        })
+        .catch(error => {
+            console.error("Error uploading image: ", error);
+        });
+    alert('Image uploaded successfully');
+}
+    </script>
     
 </head>
 
@@ -222,18 +246,8 @@
                 console.error("Error adding document: ", error);
             });
     });
-    rules_version = '2';
-
-service firebase.storage {
-  match /b/{bucket}/o {
-    match /{allPaths=**} {
-      allow read, write: if
-          request.time < timestamp.date(2024, 6, 9);
-    }
-  }
-}
 </script>
-    <script>
+<script>
 
     function uploadImage() {
         const ref = firebase.storage().ref();
