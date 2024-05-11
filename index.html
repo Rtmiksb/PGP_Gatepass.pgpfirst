@@ -276,7 +276,7 @@
     function uploadImage() {
         const storage = getStorage(firebaseApp); // Correct way to get a reference to the storage bucket
         const storageRef = ref(storage); // Get reference to the root of the storage bucket
-        const file = document.querySelector("#photo").files[0];
+        const file = document.querySelector("photo/").files[0];
         const name = +new Date() + "-" + file.name;
         const metadata = {
             contentType: file.type
